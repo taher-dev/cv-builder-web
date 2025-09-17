@@ -68,7 +68,7 @@ const Navigation = ({ language, setLanguage }) => {
             <div className="relative">
               <button
                 onClick={() => setLanguage(language === "EN" ? "BN" : "EN")}
-                className="flex items-center space-x-1 text-gray-700 hover:text-blue-600 transition-colors"
+                className="flex items-center space-x-1 text-gray-700 hover:text-blue-600 transition-colors cursor-pointer"
               >
                 <Globe className="w-4 h-4" />
                 <span className="text-sm font-medium">{language}</span>
