@@ -1,38 +1,26 @@
+// Remove useState and useEffect for language and menu
 import React, { useState, useEffect } from "react";
-// At the top of src/pages/LandingPage.jsx
 import { Link } from "react-router-dom";
-import {
-  Menu,
-  X,
-  Globe,
-  Facebook,
-  Twitter,
-  Linkedin,
-  Instagram,
-  ChevronDown,
-} from "lucide-react";
+import { Facebook, Twitter, Linkedin, Instagram } from "lucide-react";
 
-const ResumeBuilder = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [language, setLanguage] = useState("EN");
+// Import the new Navigation component
+import Navigation from "../components/Navigation";
+
+// The component now receives language and setLanguage as props
+const LandingPage = ({ language, setLanguage }) => {
+  // This scroll state can remain here as it's specific to this page
   const [scrollY, setScrollY] = useState(0);
 
-  // Handle scroll for animations
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Remove the large `text` object, it's now in Navigation.jsx.
+  // We only need the text specific to this page's content.
   const text = {
     EN: {
-      logo: "CVBuilder Bangladesh",
-      nav: {
-        about: "About",
-        help: "Help",
-        contact: "Contact",
-        login: "Login",
-      },
       hero: {
         title: "Build Your Professional CV in Minutes",
         subtitle:
@@ -40,6 +28,7 @@ const ResumeBuilder = () => {
         cta: "Build Your CV",
       },
       footer: {
+        logo: "CVBuilder Bangladesh",
         about: "About",
         help: "Help",
         contact: "Contact",
@@ -47,13 +36,6 @@ const ResumeBuilder = () => {
       },
     },
     BN: {
-      logo: "সিভি বিল্ডার বাংলাদেশ",
-      nav: {
-        about: "সম্পর্কে",
-        help: "সহায়তা",
-        contact: "যোগাযোগ",
-        login: "লগইন",
-      },
       hero: {
         title: "মিনিটেই তৈরি করুন পেশাদার সিভি",
         subtitle:
@@ -61,6 +43,7 @@ const ResumeBuilder = () => {
         cta: "সিভি তৈরি করুন",
       },
       footer: {
+        logo: "সিভি বিল্ডার বাংলাদেশ",
         about: "সম্পর্কে",
         help: "সহায়তা",
         contact: "যোগাযোগ",
@@ -73,112 +56,14 @@ const ResumeBuilder = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            {/* Logo */}
-            <div className="flex-shrink-0">
-              <h1 className="text-xl font-bold text-blue-600 sm:text-2xl">
-                {currentText.logo}
-              </h1>
-            </div>
+      {/* ===== CHANGES START HERE ===== */}
 
-            {/* Desktop Navigation */}
-            <nav className="hidden md:flex space-x-8">
-              <a
-                href="#about"
-                className="text-gray-700 hover:text-blue-600 transition-colors"
-              >
-                {currentText.nav.about}
-              </a>
-              <a
-                href="#help"
-                className="text-gray-700 hover:text-blue-600 transition-colors"
-              >
-                {currentText.nav.help}
-              </a>
-              <a
-                href="#contact"
-                className="text-gray-700 hover:text-blue-600 transition-colors"
-              >
-                {currentText.nav.contact}
-              </a>
-              <a
-                href="#login"
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-              >
-                {currentText.nav.login}
-              </a>
-            </nav>
+      {/* 1. Use the new Navigation component */}
+      <Navigation language={language} setLanguage={setLanguage} />
 
-            {/* Language Toggle & Mobile Menu */}
-            <div className="flex items-center space-x-4">
-              {/* Language Toggle */}
-              <div className="relative">
-                <button
-                  onClick={() => setLanguage(language === "EN" ? "BN" : "EN")}
-                  className="flex items-center space-x-1 text-gray-700 hover:text-blue-600 transition-colors"
-                >
-                  <Globe className="w-4 h-4" />
-                  <span className="text-sm font-medium">{language}</span>
-                  <ChevronDown className="w-4 h-4" />
-                </button>
-              </div>
+      {/* 2. The old <header> section is now completely gone. */}
 
-              {/* Mobile Menu Button */}
-              <div className="md:hidden">
-                <button
-                  onClick={() => setIsMenuOpen(!isMenuOpen)}
-                  className="text-gray-700 hover:text-blue-600"
-                >
-                  {isMenuOpen ? (
-                    <X className="w-6 h-6" />
-                  ) : (
-                    <Menu className="w-6 h-6" />
-                  )}
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* Mobile Navigation */}
-          {isMenuOpen && (
-            <div className="md:hidden border-t border-gray-200">
-              <div className="px-2 pt-2 pb-3 space-y-1">
-                <a
-                  href="#about"
-                  className="block px-3 py-2 text-gray-700 hover:text-blue-600 transition-colors"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {currentText.nav.about}
-                </a>
-                <a
-                  href="#help"
-                  className="block px-3 py-2 text-gray-700 hover:text-blue-600 transition-colors"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {currentText.nav.help}
-                </a>
-                <a
-                  href="#contact"
-                  className="block px-3 py-2 text-gray-700 hover:text-blue-600 transition-colors"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {currentText.nav.contact}
-                </a>
-                <a
-                  href="#login"
-                  className="block px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors mx-3"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {currentText.nav.login}
-                </a>
-              </div>
-            </div>
-          )}
-        </div>
-      </header>
+      {/* ===== CHANGES END HERE ===== */}
 
       {/* Hero Section */}
       <section className="relative bg-gradient-to-b from-gray-50 to-white overflow-hidden">
@@ -393,4 +278,4 @@ const ResumeBuilder = () => {
   );
 };
 
-export default ResumeBuilder;
+export default LandingPage;

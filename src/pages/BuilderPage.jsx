@@ -9,7 +9,6 @@ import {
   Briefcase,
   Target,
   Languages,
-  Globe,
   Mail,
   Phone,
   Calendar,
@@ -20,11 +19,17 @@ import TextArea from "../components/ui/TextArea";
 import Button from "../components/ui/Button";
 import Card from "../components/ui/Card";
 import CVPreview from "../components/CVPreview";
-import Navigation from "../components/ui/Navigation";
+
+// ===== CHANGES START HERE =====
+import Navigation from "../components/Navigation"; // The new navigation component
+import Breadcrumb from "../components/Breadcrumb"; // The new breadcrumb component
+// ===== CHANGES END HERE =====
 
 // Main CV Builder Component
-const BuilderPage = () => {
-  const [language, setLanguage] = useState("EN");
+// The component now receives language and setLanguage as props
+const BuilderPage = ({ language, setLanguage }) => {
+  // The local `language` state is no longer needed here
+  // const [language, setLanguage] = useState("EN");
   const [photoPreview, setPhotoPreview] = useState("");
   const fileInputRef = useRef(null);
 
@@ -256,35 +261,27 @@ const BuilderPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="mb-8">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-            <h1 className="text-3xl font-bold text-gray-900 mb-4 sm:mb-0">
-              {t.title}
-            </h1>
-            <div className="flex items-center space-x-4">
-              {/* Language Toggle */}
-              <button
-                onClick={() => setLanguage(language === "EN" ? "BN" : "EN")}
-                className="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
-              >
-                <Globe className="w-4 h-4" />
-                <span className="font-medium">{language}</span>
-              </button>
+    <div className="min-h-screen bg-gray-50">
+      {/* ===== CHANGES START HERE ===== */}
 
-              {/* Download Button */}
-              <Button
-                onClick={handleDownloadPDF}
-                className="flex items-center space-x-2"
-              >
-                <Download className="w-4 h-4" />
-                <span>{t.download}</span>
-              </Button>
-            </div>
-          </div>
+      {/* 1. Add the Navigation and Breadcrumb components */}
+      <Navigation language={language} setLanguage={setLanguage} />
+      <Breadcrumb language={language} pageTitle={t.title} />
+
+      {/* 2. The old header/title div is removed */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* The download button now goes in the header below */}
+        <div className="mb-8 flex justify-between items-center">
+          <h1 className="text-3xl font-bold text-gray-900">{t.title}</h1>
+          <Button
+            onClick={handleDownloadPDF}
+            className="flex items-center space-x-2"
+          >
+            <Download className="w-4 h-4" />
+            <span>{t.download}</span>
+          </Button>
         </div>
+        {/* ===== CHANGES END HERE ===== */}
 
         <div className="grid lg:grid-cols-2 gap-8">
           {/* Form Section */}

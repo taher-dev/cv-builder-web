@@ -9,7 +9,7 @@ const Button = ({
   ...props
 }) => {
   const baseClasses =
-    "font-medium rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2";
+    "font-medium rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 cursor-pointer";
   const variants = {
     primary: "bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500",
     secondary:
